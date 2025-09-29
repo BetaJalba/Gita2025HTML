@@ -1,62 +1,91 @@
-let studenti = 1;
+const numPartInput = document.getElementById('num_part');
 
-function updateTable(id){
-    studenti = document.getElementById(id).value;
-}
+// Load saved data on page load
+window.addEventListener('load', () => {
+    const savedData = JSON.parse(localStorage.getItem('participants') || '[]');
+    const savedNum = localStorage.getItem('num_part');
 
-function updateStudents(){
-    console.log("Ciao")
-    this.window.close()
-}
-
-function openTable(){
-  const miniWindow = window.open(
-    "",
-    "MiniWindow",
-    "width=400,height=300,top=100,left=100"
-  );
-
-  if (miniWindow) {
-    let rows = ""
-    for(let i = 0; i < studenti; i++){
-        rows += `
-            <tr>
-            <td><input type="text" name="nome${i}"></td>
-            <td><input type="text" name="cognome${i}"></td>
-            <td><input type="number" min="10" max="25" name="eta${i}"></td>
-            </tr>
-        `
+    if (savedNum) {
+        numPartInput.value = savedNum;
     }
 
-    miniWindow.document.body.innerHTML = `
-      <html>
-        <head>
-          <title>Mini Window</title>
+    if (savedData.length) {
+        generateTable(savedData);
+    }
+});
 
-        </head>
-        <body>
-          <h3>Elenco Partecipanti</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Cognome</th>
-          <th>Età</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows}
-      </tbody>
-    </table>
-    <input type="button" value="Conferma" onclick="updateStudents()">
-    <script src="src/script.js"></script>
-        </body>
-      </html>
-    `;
-  } else {
-    alert("Popup blocked! Please allow popups for this site.");
-  }
-};
+// Save number of participants whenever it changes
+numPartInput.addEventListener('input', () => {
+    localStorage.setItem('num_part', numPartInput.value);
+    generateTable(JSON.parse(localStorage.getItem('participants') || '[]'));
+});
+
+function generateTable(savedData = []) {
+    const num = parseInt(numPartInput.value) || 0;
+    const container = document.getElementById('table-container');
+    container.innerHTML = '';
+
+    if (num > 0) {
+        const table = document.createElement('table');
+
+        const header = document.createElement('tr');
+        ['Nome', 'Cognome', 'Età'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            header.appendChild(th);
+        });
+        table.appendChild(header);
+
+        for (let i = 0; i < num; i++) {
+            const tr = document.createElement('tr');
+
+            const tdName = document.createElement('td');
+            const inputName = document.createElement('input');
+            inputName.type = 'text';
+            inputName.name = 'name[]';
+            inputName.required = true;
+            inputName.value = savedData[i]?.name || '';
+            tdName.appendChild(inputName);
+
+            const tdSurname = document.createElement('td');
+            const inputSurname = document.createElement('input');
+            inputSurname.type = 'text';
+            inputSurname.name = 'surname[]';
+            inputSurname.required = true;
+            inputSurname.value = savedData[i]?.surname || '';
+            tdSurname.appendChild(inputSurname);
+
+            const tdAge = document.createElement('td');
+            const inputAge = document.createElement('input');
+            inputAge.type = 'number';
+            inputAge.name = 'age[]';
+            inputAge.min = 0;
+            inputAge.required = true;
+            inputAge.value = savedData[i]?.age || '';
+            tdAge.appendChild(inputAge);
+
+            tr.appendChild(tdName);
+            tr.appendChild(tdSurname);
+            tr.appendChild(tdAge);
+            table.appendChild(tr);
+        }
+
+        container.appendChild(table);
+
+        container.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                const allRows = Array.from(container.querySelectorAll('tr')).slice(1);
+                const data = allRows.map(row => {
+                    const [name, surname, age] = row.querySelectorAll('input');
+                    return { name: name.value, surname: surname.value, age: age.value };
+                });
+                localStorage.setItem('participants', JSON.stringify(data));
+            });
+        });
+    } else {
+        localStorage.removeItem('participants');
+    }
+}
 
 const cityData = {
     "Praga": {
@@ -84,7 +113,13 @@ const cityData = {
 const select = document.getElementById("citta");
 const display = document.getElementById("display_citta");
 
-select.addEventListener("change", function() {
+if (select.value != "--Scegli una meta--"){
+  displayCity();
+}
+
+select.addEventListener("change", displayCity);
+
+function displayCity(){
   const city = select.value;
   if(city && cityData[city]) {
     display.classList.remove("show");
@@ -100,4 +135,4 @@ select.addEventListener("change", function() {
     display.classList.remove("show");
     display.innerHTML = "";
   }
-});
+}

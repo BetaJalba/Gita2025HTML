@@ -157,4 +157,17 @@ textarea {
     resize: none;              /* optional: prevent resizing */
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
+}
+
+#table-container{
+    grid-column: 1 / 3;
+}
+
+#table-container table {
+    margin: 30px auto;
+    border-collapse: collapse; /* optional for cleaner borders */
+}
+#table-container th, #table-container td {
+    padding: 8px 12px;  /* space inside cells */
+    text-align: center;  /* center text inside cells */
+}

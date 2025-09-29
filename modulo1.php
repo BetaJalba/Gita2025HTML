@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles/styles.css">
+        <meta charset="utf-8" />
     </head>
     <body>
         <header>
@@ -23,23 +24,27 @@
                 <div id="display_citta"></div>
             </article>
             <article>
-                <form class="container">
+                <form class="container" action="stampa.php" method="post">
+
                     <h2>Paragrafo 1</h2>
+
                     <label for="richiedente">Docente richiedente: *</label>
-                    <input type="text" id="richiedente">
+                    <input type="text" id="richiedente" name="richiedente" required>
+
                     <label for="classe">Classe: *</label>
-                    <input type="text" id="richiedente">
+                    <input type="text" id="classe" name="classe" required>
 
                     <label for="num_part">Numero partecipanti: *</label>
-                    <input type="number" id="num_part" min="1" max="50" value="1" onchange="updateTable(id)">
-                    <label for="elenco_part">Elenco partecipanti: *</label>
-                    <input type="button" value="Apri" id="elenco_part" onclick="openTable()">
+                    <input type="number" id="num_part" name="num_part" min="1" max="50" value="1" required>
+
+                    <label>Elenco partecipanti: *</label>
+                    <div id="table-container"></div>
 
                     <label for="data">Data e ora: *</label>
-                    <input type="date" id="data">
+                    <input type="date" id="data" name="data" required>
 
                     <label for="citta">Preferenze meta: *</label>
-                    <select id="citta" name="citta">
+                    <select id="citta" name="citta" required>
                         <option value="">--Scegli una meta--</option>
                         <option value="Praga">Praga</option>
                         <option value="Andalusia">Andalusia</option>
@@ -48,45 +53,38 @@
                         <option value="Parigi">Parigi</option>
                     </select>
 
-                    <label for="mezzi">Preferenze mezzo: *</label>
+                    <label>Preferenze mezzo: *</label>
                     <div id="mezzi">
-                        <label>
-                        <input type="checkbox" name="mezzo" value="Aereo"> Aereo
-                        </label><br>
-                        <label>
-                        <input type="checkbox" name="mezzo" value="Treno"> Treno
-                        </label><br>
-                        <label>
-                        <input type="checkbox" name="mezzo" value="Autobus"> Autobus
-                        </label><br>
-                        <label>
-                        <input type="checkbox" name="mezzo" value="Crociera"> Crociera
-                        </label><br>
+                        <label><input type="checkbox" name="mezzo[]" value="Aereo"> Aereo</label><br>
+                        <label><input type="checkbox" name="mezzo[]" value="Treno"> Treno</label><br>
+                        <label><input type="checkbox" name="mezzo[]" value="Autobus"> Autobus</label><br>
+                        <label><input type="checkbox" name="mezzo[]" value="Crociera"> Crociera</label><br>
                     </div>
 
                     <h2>Paragrafo 2</h2>
+
                     <label for="trattamento">Trattamento: *</label>
-                    <select id="trattamento" name="trattamento">
+                    <select id="trattamento" name="trattamento" required>
                         <option value="">--Scegli il trattamento--</option>
                         <option value="b_b">b&b</option>
                         <option value="mezza_pensione">Mezza pensione</option>
                         <option value="pensione_completa">Pensione completa</option>
                     </select>
-                    
 
                     <label for="quota_capite">Quota pro-capite: *</label>
-                    <input type="number" id="quota_capite" placeholder="0,00 €">
+                    <input type="number" id="quota_capite" name="quota_capite" placeholder="0,00 €" step="0.01" required>
 
                     <label for="mail_docente">Email del docente: *</label>
-                    <input type="email" id="mail_docente">
+                    <input type="email" id="mail_docente" name="mail_docente" required>
 
                     <label for="note">Note:</label>
-                    <textarea placeholder="Note..."></textarea>
+                    <textarea id="note" name="note" placeholder="Note..."></textarea>
 
                     <div class="submit_div">
-                        <input type="button" id="cancella" value="Cancella Richiesta">
-                        <input type="submit" id="submit">
+                        <input type="reset" id="cancella" value="Cancella Richiesta">
+                        <input type="submit" id="submit" value="Invia Richiesta">
                     </div>
+
                 </form>
             </article>
         </main>
