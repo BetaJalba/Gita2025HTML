@@ -1,6 +1,6 @@
 const numPartInput = document.getElementById('num_part');
 
-// Load saved data on page load
+// localStorage permetto di salvare le coppie key/value nel browser.
 window.addEventListener('load', () => {
     const savedData = JSON.parse(localStorage.getItem('participants') || '[]');
     const savedNum = localStorage.getItem('num_part');
@@ -14,7 +14,7 @@ window.addEventListener('load', () => {
     }
 });
 
-// Save number of participants whenever it changes
+
 numPartInput.addEventListener('input', () => {
     localStorage.setItem('num_part', numPartInput.value);
     generateTable(JSON.parse(localStorage.getItem('participants') || '[]'));
