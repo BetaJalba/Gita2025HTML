@@ -24,7 +24,7 @@
                 <div id="display_citta"></div>
             </article>
             <article>
-                <form class="container" action="stampa.php" method="post">
+                <form class="container" action="StampaArrayAssociativi.php" method="post">
 
                     <h2>Paragrafo 1</h2>
 

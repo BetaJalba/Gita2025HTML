@@ -64,6 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<p><strong>Note:</strong> " . nl2br(htmlspecialchars($note)) . "</p>";
 
     echo "<script>print()</script>";
+
+    foreach($_POST as $k => $v){
+        echo "<p>" . strtoupper(htmlspecialchars($k)) . ": " . (is_array($v) ? print_r($v, true) : htmlspecialchars($v)) . "</p>";
+    };
 } else {
     echo "<p>Nessun dato inviato.</p>";
 }
